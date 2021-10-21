@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import br.com.acme.fakeecomerce.timezone.model.Cart;
 import br.com.acme.fakeecomerce.timezone.model.User;
 import br.com.acme.fakeecomerce.timezone.repository.UserRepository;
 
@@ -32,6 +33,11 @@ public class UserService {
 	
 	public void deleteById(long id) {
 		repository.deleteById(id);
+	}
+	
+	public void limparCart(Cart cart) {
+		cart.getCartItens().removeAll(null);
+		
 	}
 
 }

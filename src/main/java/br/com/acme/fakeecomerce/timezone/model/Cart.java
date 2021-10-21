@@ -48,5 +48,9 @@ public class Cart {
 	public void setCartItens(List<ItemCart> cartItens) {
 		this.cartItens = cartItens;
 	}
+	
+	public void cleanCart() {
+		user.getCart().cartItens.removeAll(cartItens);
+	}
 
 }
