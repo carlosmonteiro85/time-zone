@@ -1,5 +1,8 @@
 package br.com.acme.fakeecomerce.timezone.api.controller;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -30,7 +33,6 @@ public class HomeController {
 	private final ProductService service;
 	private final ProdutoAssembler mapper;
 	
-
 	@GetMapping(path = { "", "home" })
 	public String home(Model model) {
 		List<ProdutoDTO> produtos = service.findProdutos();
@@ -40,7 +42,19 @@ public class HomeController {
 
 	@GetMapping("shop")
 	public String shop(Model model) {
-		return "product_details";
+	    List<ProdutoDTO> produtos = service.findProdutos();
+	    model.addAttribute("produtos", produtos);
+	    
+	    List<ProdutoDTO> produtosPorPreco = new ArrayList<>(produtos);
+	    Collections.sort(produtosPorPreco, Comparator.comparing(ProdutoDTO::getPreco));
+	    model.addAttribute("produtosPorPreco", produtosPorPreco);
+        
+	    List<ProdutoDTO> maisPopulares = new ArrayList<>(produtos);
+	    // TODO adicionar os mais populares
+        Collections.sort(maisPopulares, Comparator.comparing(ProdutoDTO::getNome));
+        model.addAttribute("maisPopulares", maisPopulares);
+	    
+		return "shop";
 	}
 	
 	@GetMapping("elements")
@@ -53,14 +67,9 @@ public class HomeController {
 		return "cart";
 	}
 	
-	@GetMapping("main")
-	public String main(Model model) {
-		return "main";
-	}
-	
 	@GetMapping(params = "codigo", value = "produto")
-	public String main(@RequestParam("codigo") Long IdProduto, Model model) {
-			Produto produto = service.findById(IdProduto);
+	public String main(@RequestParam("codigo") Long id, Model model) {
+			Produto produto = service.findById(id);
 			model.addAttribute("produto", mapper.toDTO(produto));
 		return "product_details";
 	}

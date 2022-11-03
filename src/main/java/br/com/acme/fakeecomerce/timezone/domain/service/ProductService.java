@@ -33,6 +33,11 @@ public class ProductService {
 	public Produto findById(Long id){
 		return repository.findById(id).orElseThrow( () -> new ProdutoNaoEncontradoException("Produto não Encontrado."));
 	}
+	
+	   public List<ProdutoDTO> ordenadoPormenoresPrecos() {
+	        return mapper.toCollectionDTO(repository.ordenadoPorPreco());
+	    }
+	
 //
 //	public List<Product> findAll() {
 //		return productRepository.findAll();
