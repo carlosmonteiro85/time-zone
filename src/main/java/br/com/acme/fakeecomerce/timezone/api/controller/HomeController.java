@@ -70,6 +70,7 @@ public class HomeController {
 	
 	@GetMapping("cart")
 	public String elements2(Model model) {
+	    model.addAttribute(AppConstantes.ITEM_CART, Utils.totalItensCarrinho(userService));
 		return "cart";
 	}
 	
