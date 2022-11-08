@@ -10,4 +10,5 @@ public class AppConstantes {
 	public static final String PATH_IMAGES = System.getProperty("user.dir") + SEPARADOR + "src" + SEPARADOR
 			+ "resources" + SEPARADOR + "static" + SEPARADOR + "assets" + SEPARADOR + "img" + SEPARADOR;
 // //home/carlos-monteiro/desenvolvimento/prototipo/time-zone/src/main/resources/static/assets/img/gallery
+	public static final String ITEM_CART =  "cartQuantidade";
 }

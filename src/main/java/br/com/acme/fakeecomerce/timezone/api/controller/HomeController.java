@@ -17,12 +17,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import br.com.acme.fakeecomerce.timezone.api.dto.ItemCartDTO;
 import br.com.acme.fakeecomerce.timezone.api.dto.ProdutoDTO;
 import br.com.acme.fakeecomerce.timezone.api.mapper.ProdutoAssembler;
 import br.com.acme.fakeecomerce.timezone.core.exception.ErrorInfo;
 import br.com.acme.fakeecomerce.timezone.core.exception.ProdutoNaoEncontradoException;
 import br.com.acme.fakeecomerce.timezone.domain.model.Produto;
 import br.com.acme.fakeecomerce.timezone.domain.service.ProductService;
+import br.com.acme.fakeecomerce.timezone.domain.service.UserService;
+import br.com.acme.fakeecomerce.timezone.util.AppConstantes;
+import br.com.acme.fakeecomerce.timezone.util.Utils;
 import lombok.RequiredArgsConstructor;
 
 @Controller
@@ -31,12 +35,14 @@ import lombok.RequiredArgsConstructor;
 public class HomeController {
 	
 	private final ProductService service;
+	private final UserService userService;
 	private final ProdutoAssembler mapper;
 	
 	@GetMapping(path = { "", "home" })
 	public String home(Model model) {
 		List<ProdutoDTO> produtos = service.findProdutos();
 		model.addAttribute("produtos", produtos);
+		model.addAttribute(AppConstantes.ITEM_CART, Utils.totalItensCarrinho(userService));
 		return "index";
 	}
 
@@ -50,10 +56,10 @@ public class HomeController {
 	    model.addAttribute("produtosPorPreco", produtosPorPreco);
         
 	    List<ProdutoDTO> maisPopulares = new ArrayList<>(produtos);
-	    // TODO adicionar os mais populares
         Collections.sort(maisPopulares, Comparator.comparing(ProdutoDTO::getNome));
         model.addAttribute("maisPopulares", maisPopulares);
 	    
+        model.addAttribute(AppConstantes.ITEM_CART, Utils.totalItensCarrinho(userService));
 		return "shop";
 	}
 	
@@ -67,12 +73,31 @@ public class HomeController {
 		return "cart";
 	}
 	
-	@GetMapping(params = "codigo", value = "produto")
-	public String main(@RequestParam("codigo") Long id, Model model) {
-			Produto produto = service.findById(id);
-			model.addAttribute("produto", mapper.toDTO(produto));
-		return "product_details";
-	}
+	@GetMapping("confirmation")
+    public String elements3(Model model) {
+        return "confirmation";
+    }
+	
+	@GetMapping("contact")
+    public String elements4(Model model) {
+	    model.addAttribute(AppConstantes.ITEM_CART, Utils.totalItensCarrinho(userService));
+        return "contact";
+    }
+	
+	@GetMapping("product_details")
+    public String elements5(Model model) {
+        return "product_details";
+    }
+	
+    @GetMapping(params = "codigo", value = "produto")
+    public String main(@RequestParam("codigo") Long id, Model model) {
+        Produto produto = service.findById(id);
+        ItemCartDTO itemCartDTO = new ItemCartDTO(mapper.toDTO(produto));
+        model.addAttribute("produto", produto);
+        model.addAttribute("itemCartDTO", itemCartDTO);
+        model.addAttribute(AppConstantes.ITEM_CART, Utils.totalItensCarrinho(userService));
+        return "product_details";
+    }
 	
 	@ResponseStatus(HttpStatus.NOT_FOUND)
 	@ExceptionHandler(ProdutoNaoEncontradoException.class)

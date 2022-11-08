@@ -13,6 +13,9 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -32,6 +35,7 @@ public class Produto {
 	private BigDecimal preco;
 	@Column(length = 500)
 	private String descricao;
-	@OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@Fetch(value = FetchMode.SUBSELECT)
 	private List<Imagem> imagens;
 }
