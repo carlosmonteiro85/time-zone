@@ -2,6 +2,8 @@ package br.com.acme.fakeecomerce.timezone.domain.model;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -27,4 +29,9 @@ public class User {
 	@OneToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
 	@JoinColumn(name = "id_cart", nullable = false )
 	private Cart cart;
+	
+	@Setter
+    @Getter
+	@Enumerated(EnumType.STRING)
+	private RegiaoEnum regiao;
 }

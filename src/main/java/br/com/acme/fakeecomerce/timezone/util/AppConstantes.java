@@ -8,4 +8,5 @@ public class AppConstantes {
 			+ "resources" + SEPARADOR + "static" + SEPARADOR + "assets" + SEPARADOR + "img" + SEPARADOR;
 	
 	public static final String ITEM_CART =  "cartQuantidade";
+	public static final String CHECKOUT =  "checkout";
 }

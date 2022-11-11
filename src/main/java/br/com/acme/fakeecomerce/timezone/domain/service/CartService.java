@@ -53,7 +53,7 @@ public class CartService {
         User usuario = obterUsuarioLogado();
         boolean possueItem = verificarSePossueItem(item, usuario.getCart(), AcaoEnum.REMOVER);
         
-        if(!possueItem) {
+        if(possueItem) {
             usuario.getCart().removeItemCart(item);
         }
         

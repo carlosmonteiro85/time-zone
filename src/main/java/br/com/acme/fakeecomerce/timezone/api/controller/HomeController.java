@@ -12,17 +12,23 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import br.com.acme.fakeecomerce.timezone.api.dto.ItemCartDTO;
+import br.com.acme.fakeecomerce.timezone.api.dto.ItemRemoveDTO;
 import br.com.acme.fakeecomerce.timezone.api.dto.ProdutoDTO;
+import br.com.acme.fakeecomerce.timezone.api.dto.UserDTO;
 import br.com.acme.fakeecomerce.timezone.api.mapper.ProdutoAssembler;
+import br.com.acme.fakeecomerce.timezone.api.mapper.UserDisassembler;
 import br.com.acme.fakeecomerce.timezone.core.exception.ErrorInfo;
 import br.com.acme.fakeecomerce.timezone.core.exception.ProdutoNaoEncontradoException;
+import br.com.acme.fakeecomerce.timezone.domain.model.Cart;
 import br.com.acme.fakeecomerce.timezone.domain.model.Produto;
+import br.com.acme.fakeecomerce.timezone.domain.model.User;
 import br.com.acme.fakeecomerce.timezone.domain.service.ProductService;
 import br.com.acme.fakeecomerce.timezone.domain.service.UserService;
 import br.com.acme.fakeecomerce.timezone.util.AppConstantes;
@@ -37,6 +43,7 @@ public class HomeController {
 	private final ProductService service;
 	private final UserService userService;
 	private final ProdutoAssembler mapper;
+	private final UserDisassembler userDisassembler;
 	
 	@GetMapping(path = { "", "home" })
 	public String home(Model model) {
@@ -69,14 +76,34 @@ public class HomeController {
 	}
 	
 	@GetMapping("cart")
-	public String elements2(Model model) {
+	public String cart2(Model model) {
+	    
+	    Cart cart = Utils.obterCarrinho(userService);
+	    
 	    model.addAttribute(AppConstantes.ITEM_CART, Utils.totalItensCarrinho(userService));
+	    model.addAttribute("cart", cart);
+	    model.addAttribute(AppConstantes.CHECKOUT, Utils.verificarCheck(cart));
+	    model.addAttribute("userDTO", new UserDTO());
+	    
 		return "cart";
 	}
+	
+	@PostMapping("regiao")
+    public String atualizarRegiao(UserDTO userDTO, Model model) {
+	    User user = userService.obtemUsuario();
+	    userDisassembler.copyToDomainObject(userDTO, user);
+	    userService.save(user);
+        return "redirect:/cart";
+    }
 	
 	@GetMapping("confirmation")
     public String elements3(Model model) {
         return "confirmation";
+    }
+	
+	@GetMapping("checkout")
+    public String elements6(Model model) {
+        return "checkout";
     }
 	
 	@GetMapping("contact")

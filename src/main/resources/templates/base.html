@@ -36,7 +36,7 @@
                                 </li>
                                 <li> <a href="login.html"><span class="flaticon-user"></span></a></li>
                                 <li th:if="${cartQuantidade}" ><a href="cart"><span class="flaticon-shopping-cart" th:text="${cartQuantidade}">10</span></a></li>
-                                <li th:if="${cartQuantidade == null}" ><a href="cart"><span class="flaticon-shopping-cart"></span></a></li>
+                                <li th:unless="${cartQuantidade}" ><a href="cart"><span class="flaticon-shopping-cart"></span></a></li>
                             </ul>
                         </div>
                     </div>
