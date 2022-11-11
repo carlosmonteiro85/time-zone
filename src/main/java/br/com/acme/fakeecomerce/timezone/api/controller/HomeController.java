@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import br.com.acme.fakeecomerce.timezone.api.dto.ItemCartDTO;
-import br.com.acme.fakeecomerce.timezone.api.dto.ItemRemoveDTO;
 import br.com.acme.fakeecomerce.timezone.api.dto.ProdutoDTO;
 import br.com.acme.fakeecomerce.timezone.api.dto.UserDTO;
 import br.com.acme.fakeecomerce.timezone.api.mapper.ProdutoAssembler;
@@ -50,6 +49,7 @@ public class HomeController {
 		List<ProdutoDTO> produtos = service.findProdutos();
 		model.addAttribute("produtos", produtos);
 		model.addAttribute(AppConstantes.ITEM_CART, Utils.totalItensCarrinho(userService));
+		model.addAttribute("itemCartDTO", new ItemCartDTO());
 		return "index";
 	}
 
