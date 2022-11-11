@@ -10,8 +10,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import br.com.acme.fakeecomerce.timezone.api.dto.ItemCartDTO;
 import br.com.acme.fakeecomerce.timezone.domain.model.Cart;
 import br.com.acme.fakeecomerce.timezone.domain.model.ItemCart;
+import br.com.acme.fakeecomerce.timezone.domain.model.Produto;
 import br.com.acme.fakeecomerce.timezone.domain.service.CartService;
 import br.com.acme.fakeecomerce.timezone.domain.service.ItemService;
+import br.com.acme.fakeecomerce.timezone.domain.service.ProductService;
 import lombok.RequiredArgsConstructor;
 
 @Controller
@@ -21,6 +23,7 @@ public class CartController {
     
     private final CartService cartService;
     private final ItemService itemService;
+    private final ProductService produtoService;
     
     @PostMapping("addItemCart")
     public String addItemCart(ItemCartDTO itemCartDTO, Model model) {
@@ -34,5 +37,12 @@ public class CartController {
         ItemCart item = itemService.findById(id);
         cartService.removerItemCarrinho(item);
         return "redirect:/cart";
+    }
+    
+    @GetMapping(params = "codigo", value = "produto")
+    public String addItemSimplesAoCart(@RequestParam("codigo") Long id, Model model) {
+        Produto produto = produtoService.findById(id);
+        cartService.addItemCarrinho(new ItemCart(produto, 1));
+        return "redirect:/";
     }
 }

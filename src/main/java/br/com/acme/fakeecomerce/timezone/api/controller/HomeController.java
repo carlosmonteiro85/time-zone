@@ -103,6 +103,13 @@ public class HomeController {
 	
 	@GetMapping("checkout")
     public String elements6(Model model) {
+	    
+	    Cart cart = Utils.obterCarrinho(userService);
+        
+//        model.addAttribute(AppConstantes.ITEM_CART, Utils.totalItensCarrinho(userService));
+//        model.addAttribute("cart", cart);
+        model.addAttribute(AppConstantes.CHECKOUT, Utils.verificarCheck(cart));
+	    
         return "checkout";
     }
 	

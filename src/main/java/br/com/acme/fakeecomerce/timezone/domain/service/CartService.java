@@ -48,7 +48,6 @@ public class CartService {
         return save(usuario.getCart());
     }
 
-
     public Cart removerItemCarrinho(ItemCart item) {
         User usuario = obterUsuarioLogado();
         boolean possueItem = verificarSePossueItem(item, usuario.getCart(), AcaoEnum.REMOVER);
