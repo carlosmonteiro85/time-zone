@@ -15,7 +15,7 @@ jobs:
         username: ${{ secrets.DOCKER_LOG }}
         password: ${{ secrets.DOCKER_PASSWORD }}
     - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag time-zone:$(date +%s)
+      run: docker build . --file Dockerfile --tag time-zone:$(date +%s) && docker push ${{ secrets.DOCKER_HUB_USERNAME }}/time-zone
     - name: Checkout
       uses: actions/checkout@v3
 
