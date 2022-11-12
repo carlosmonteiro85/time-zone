@@ -20,7 +20,7 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Build 
-      run: docker build . --file Dockerfile --tag time-zone:lateste && docker push 85devs/time-zone 
+      run: docker build --file Dockerfile -t 85devs/time-zone . && docker push 85devs/time-zone 
     - name: Checkout
       uses: actions/checkout@v3
 
@@ -49,7 +49,7 @@ jobs:
     #steps:
     #- uses: actions/checkout@v3
     #- name: Build 
-      #run: docker build . --file Dockerfile --tag time-zone:lateste
+      #run:  docker build --file Dockerfile -t 85devs/time-zone .
     #- name: Checkout
       #uses: actions/checkout@v3
 
