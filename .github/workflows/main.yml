@@ -10,18 +10,12 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    -
-      name: Login to Docker Hub
-      uses: docker/login-action@v2
+    - name: Login to Docker Hub
+      uses: docker/login-action@v1
       with:
         username: ${{ secrets.DOCKER_HUB_USERNAME }}
         password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
-    -
-        name: Build and push
-        uses: docker/build-push-action@v3
-        with:
-          context: .
-          file: ./Dockerfile
-          push: true
-          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/time-zone:latest
+    - name: Build and push
+      run: docker build . --file Dockerfile --tag time-zone:latest && docker push ${{ secrets.DOCKER_HUB_USERNAME }}/time-zone 
+    
       
