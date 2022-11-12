@@ -7,19 +7,23 @@ on:
     branches: [ "master" ]
 
 jobs:
+  login:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Login to Docker Hub
+      uses: docker/login-action@v2
+      with:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: docker/login-action@v2
-      with:
-        username: ${{ secrets.DOCKER_LOG }}
-        password: ${{ secrets.DOCKER_PASSWORD }}
     - name: BUILD
       run: docker build . --file Dockerfile --tag time-zone:$(date +%s)
     - name: PUSH
       run: docker push ${{ secrets.DOCKER_HUB_USERNAME }}/time-zone
     - name: Checkout
-      uses: docker/login-action@v2
+      uses: actions/checkout@v3
 
 
 
