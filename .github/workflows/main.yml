@@ -26,7 +26,7 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           push: true
-          tags: 85devs/time-zone
+          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/time-zone
           
           
 #name: Teste CI
