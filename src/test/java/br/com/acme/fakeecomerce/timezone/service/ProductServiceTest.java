@@ -121,6 +121,7 @@ public class ProductServiceTest extends TimeZoneApplicationTests {
 							+ "luminescentes e marcadores de horas de índice, "
 							+ "detalhes em vermelho e um recurso de cronógrafo. ")
 				.imagens(anexarImagens())
+				.codigoProduto(String.valueOf(System.currentTimeMillis()))
 				.build();
 	}
 	

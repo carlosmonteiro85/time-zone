@@ -38,92 +38,91 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @RequestMapping("/")
 public class HomeController {
-	
-	private final ProductService service;
-	private final UserService userService;
-	private final ProdutoAssembler mapper;
-	private final UserDisassembler userDisassembler;
-	
-	@GetMapping(path = { "", "home" })
-	public String home(Model model) {
-		List<ProdutoDTO> produtos = service.findProdutos();
-		model.addAttribute("produtos", produtos);
-		model.addAttribute(AppConstantes.ITEM_CART, Utils.totalItensCarrinho(userService));
-		model.addAttribute("itemCartDTO", new ItemCartDTO());
-		return "index";
-	}
 
-	@GetMapping("shop")
-	public String shop(Model model) {
-	    List<ProdutoDTO> produtos = service.findProdutos();
-	    model.addAttribute("produtos", produtos);
-	    
-	    List<ProdutoDTO> produtosPorPreco = new ArrayList<>(produtos);
-	    Collections.sort(produtosPorPreco, Comparator.comparing(ProdutoDTO::getPreco));
-	    model.addAttribute("produtosPorPreco", produtosPorPreco);
-        
-	    List<ProdutoDTO> maisPopulares = new ArrayList<>(produtos);
+    private final ProductService service;
+    private final UserService userService;
+    private final ProdutoAssembler mapper;
+    private final UserDisassembler userDisassembler;
+
+    @GetMapping(path = { "", "home" })
+    public String home(Model model) {
+        List<ProdutoDTO> produtos = service.findProdutos();
+        model.addAttribute("produtos", produtos);
+        model.addAttribute(AppConstantes.ITEM_CART, Utils.totalItensCarrinho(userService));
+        model.addAttribute("itemCartDTO", new ItemCartDTO());
+        return "index";
+    }
+
+    @GetMapping("shop")
+    public String shop(Model model) {
+        List<ProdutoDTO> produtos = service.findProdutos();
+        model.addAttribute("produtos", produtos);
+
+        List<ProdutoDTO> produtosPorPreco = new ArrayList<>(produtos);
+        Collections.sort(produtosPorPreco, Comparator.comparing(ProdutoDTO::getPreco));
+        model.addAttribute("produtosPorPreco", produtosPorPreco);
+
+        List<ProdutoDTO> maisPopulares = new ArrayList<>(produtos);
         Collections.sort(maisPopulares, Comparator.comparing(ProdutoDTO::getNome));
         model.addAttribute("maisPopulares", maisPopulares);
-	    
+
         model.addAttribute(AppConstantes.ITEM_CART, Utils.totalItensCarrinho(userService));
-		return "shop";
-	}
-	
-	@GetMapping("elements")
-	public String elements(Model model) {
-		return "elements";
-	}
-	
-	@GetMapping("cart")
-	public String cart2(Model model) {
-	    
-	    Cart cart = Utils.obterCarrinho(userService);
-	    
-	    model.addAttribute(AppConstantes.ITEM_CART, Utils.totalItensCarrinho(userService));
-	    model.addAttribute("cart", cart);
-	    model.addAttribute(AppConstantes.CHECKOUT, Utils.verificarCheck(cart));
-	    model.addAttribute("userDTO", new UserDTO());
-	    
-		return "cart";
-	}
-	
-	@PostMapping("regiao")
+        return "shop";
+    }
+
+    @GetMapping("elements")
+    public String elements(Model model) {
+        return "elements";
+    }
+
+    @GetMapping("cart")
+    public String cart2(Model model) {
+
+        Cart cart = Utils.obterCarrinho(userService);
+
+        model.addAttribute(AppConstantes.ITEM_CART, Utils.totalItensCarrinho(userService));
+        model.addAttribute("cart", cart);
+        model.addAttribute(AppConstantes.CHECKOUT, Utils.verificarCheck(cart));
+        model.addAttribute("userDTO", new UserDTO());
+
+        return "cart";
+    }
+
+    @PostMapping("regiao")
     public String atualizarRegiao(UserDTO userDTO, Model model) {
-	    User user = userService.obtemUsuario();
-	    userDisassembler.copyToDomainObject(userDTO, user);
-	    userService.save(user);
+        User user = userService.obtemUsuario();
+        userDisassembler.copyToDomainObject(userDTO, user);
+        userService.save(user);
         return "redirect:/cart";
     }
-	
-	@GetMapping("confirmation")
+
+    @GetMapping("confirmation")
     public String elements3(Model model) {
         return "confirmation";
     }
-	
-	@GetMapping("checkout")
+
+    @GetMapping("checkout")
     public String elements6(Model model) {
-	    
-	    Cart cart = Utils.obterCarrinho(userService);
-        
-//        model.addAttribute(AppConstantes.ITEM_CART, Utils.totalItensCarrinho(userService));
-//        model.addAttribute("cart", cart);
+
+        Cart cart = Utils.obterCarrinho(userService);
+
+        model.addAttribute(AppConstantes.ITEM_CART, Utils.totalItensCarrinho(userService));
         model.addAttribute(AppConstantes.CHECKOUT, Utils.verificarCheck(cart));
-	    
+
         return "checkout";
     }
-	
-	@GetMapping("contact")
+
+    @GetMapping("contact")
     public String elements4(Model model) {
-	    model.addAttribute(AppConstantes.ITEM_CART, Utils.totalItensCarrinho(userService));
+        model.addAttribute(AppConstantes.ITEM_CART, Utils.totalItensCarrinho(userService));
         return "contact";
     }
-	
-	@GetMapping("product_details")
+
+    @GetMapping("product_details")
     public String elements5(Model model) {
         return "product_details";
     }
-	
+
     @GetMapping(params = "codigo", value = "produto")
     public String main(@RequestParam("codigo") Long id, Model model) {
         Produto produto = service.findById(id);
@@ -133,11 +132,11 @@ public class HomeController {
         model.addAttribute(AppConstantes.ITEM_CART, Utils.totalItensCarrinho(userService));
         return "product_details";
     }
-	
-	@ResponseStatus(HttpStatus.NOT_FOUND)
-	@ExceptionHandler(ProdutoNaoEncontradoException.class)
-	@ResponseBody ErrorInfo
-	handleBadRequest(HttpServletRequest req, ProdutoNaoEncontradoException ex) {
-	    return new ErrorInfo(req.getRequestURI(), ex);
-	} 
+
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(ProdutoNaoEncontradoException.class)
+    @ResponseBody
+    ErrorInfo handleBadRequest(HttpServletRequest req, ProdutoNaoEncontradoException ex) {
+        return new ErrorInfo(req.getRequestURI(), ex);
+    }
 }

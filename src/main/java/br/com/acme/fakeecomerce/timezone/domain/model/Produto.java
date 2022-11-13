@@ -38,4 +38,5 @@ public class Produto {
 	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@Fetch(value = FetchMode.SUBSELECT)
 	private List<Imagem> imagens;
+	private String codigoProduto;
 }
