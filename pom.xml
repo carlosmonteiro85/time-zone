@@ -71,10 +71,21 @@
 			<version>1.0.2</version>
 			<scope>test</scope>
 		</dependency>
-				<dependency>
+		<dependency>
 			<groupId>org.springdoc</groupId>
 			<artifactId>springdoc-openapi-ui</artifactId>
 			<version>1.6.10</version>
+		</dependency>
+<!--		renderizar pdf-->
+		<dependency>
+		    <groupId>org.jsoup</groupId>
+		    <artifactId>jsoup</artifactId>
+		    <version>1.13.1</version>
+		</dependency>
+		<dependency>
+		    <groupId>org.xhtmlrenderer</groupId>
+		    <artifactId>flying-saucer-pdf-openpdf</artifactId>
+		    <version>9.1.20</version>
 		</dependency>
 	</dependencies>
 

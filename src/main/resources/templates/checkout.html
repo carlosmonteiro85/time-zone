@@ -49,42 +49,37 @@
 				<div class="row">
 					<div class="col-lg-6">
 						<h3>Detalhes da entrega</h3>
-						<form class="row contact_form" action="#" method="post"
-							novalidate="novalidate">
+						<form th:action="@{/gerar-nfe}" th:object="${nf}" id="forma" class="row contact_form" method="post">
 							<div class="col-md-12 form-group p_star">
-								<input type="text" class="form-control" id="first" name="name" 
+								<input type="text" class="form-control" id="first" th:field="*{nomeDestinatario}"  
 								placeholder="Nome Destinatário" />
 							</div>
 							<div class="col-md-12 form-group p_star">
 								<input type="text" class="form-control" id="cep"
-									name="cep" onblur="buscarCep()" placeholder="CEP" /> 
+									th:field="*{cep}" onblur="buscarCep()" placeholder="CEP" /> 
 							</div>
 							<div class="col-md-6 form-group p_star">
 								<input type="text" class="form-control" id="logradouro"
-									name="compemailany" placeholder="Logradouro" /> 
+									th:field="*{logradouro}" placeholder="Logradouro" /> 
 							</div>
 							<div class="col-md-6 form-group p_star">
 								<input type="text" class="form-control" id="localidade"
-									name="compemailany" placeholder="Localidade" />
+									th:field="*{localidade}" placeholder="Localidade" />
 							</div>
 							<div class="col-md-6 form-group p_star">
 								<input type="text" class="form-control" id="bairro"
-									name="compemailany" placeholder="Bairro" /> 
+									th:field="*{bairro}" placeholder="Bairro" /> 
 							</div>
 							<div class="col-md-6 form-group p_star">
-								<input type="text" class="form-control" id="uf" name="add1" 
+								<input type="text" class="form-control" id="uf" th:field="*{uf}" 
 								placeholder="UF" />
 							</div>
 							<div class="col-md-6 form-group p_star">
-								<input type="text" class="form-control" id="add2" name="add2" 
+								<input type="text" class="form-control" id="add2" th:field="*{telefone}" 
 								placeholder="Celular"/>
 							</div>
-							<div class="col-md-6 form-group p_star">
-								<input type="text" class="form-control" id="city" name="city" 
-								placeholder="Telefone" />
-							</div>
 							<div class="col-md-12 form-group">
-								<input type="email" class="form-control" id="zip" name="zip"
+								<input type="email" class="form-control" id="zip" th:field="*{email}"
 									placeholder="Email" />
 							</div>
 						</form>
@@ -133,7 +128,7 @@
 									for="f-option4">Eu li e aceito os</label> <a href="#">termos
 									& condições*</a>
 							</div>
-							<a class="btn_3" href="#">Efetuar pagamento</a>
+							<button class="btn_3" form="forma">Efetuar pagamento</button>
 						</div>
 					</div>
 				</div>

@@ -6,6 +6,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -26,8 +27,10 @@ import br.com.acme.fakeecomerce.timezone.api.mapper.UserDisassembler;
 import br.com.acme.fakeecomerce.timezone.core.exception.ErrorInfo;
 import br.com.acme.fakeecomerce.timezone.core.exception.ProdutoNaoEncontradoException;
 import br.com.acme.fakeecomerce.timezone.domain.model.Cart;
+import br.com.acme.fakeecomerce.timezone.domain.model.NfDTO;
 import br.com.acme.fakeecomerce.timezone.domain.model.Produto;
 import br.com.acme.fakeecomerce.timezone.domain.model.User;
+import br.com.acme.fakeecomerce.timezone.domain.service.CartService;
 import br.com.acme.fakeecomerce.timezone.domain.service.ProductService;
 import br.com.acme.fakeecomerce.timezone.domain.service.UserService;
 import br.com.acme.fakeecomerce.timezone.util.AppConstantes;
@@ -41,6 +44,7 @@ public class HomeController {
 
     private final ProductService service;
     private final UserService userService;
+    private final CartService cartService;
     private final ProdutoAssembler mapper;
     private final UserDisassembler userDisassembler;
 
@@ -103,13 +107,21 @@ public class HomeController {
 
     @GetMapping("checkout")
     public String elements6(Model model) {
-
         Cart cart = Utils.obterCarrinho(userService);
-
         model.addAttribute(AppConstantes.ITEM_CART, Utils.totalItensCarrinho(userService));
         model.addAttribute(AppConstantes.CHECKOUT, Utils.verificarCheck(cart));
-
+        model.addAttribute("nf", new NfDTO());
         return "checkout";
+    }
+
+    @PostMapping("gerar-nfe")
+    public String elements7(NfDTO nf, Model model) {
+        Cart cart = Utils.obterCarrinho(userService);
+        nf.setCheckout(Utils.verificarCheck(cart));
+        String pathNF = Utils.gerarNF(nf);
+        model.addAttribute("pathNF", pathNF.replace("/", "-").replace("\\", "-"));
+        model.addAttribute(AppConstantes.CHECKOUT, Utils.verificarCheck(cart));
+        return "confirmation";
     }
 
     @GetMapping("contact")
@@ -131,6 +143,13 @@ public class HomeController {
         model.addAttribute("itemCartDTO", itemCartDTO);
         model.addAttribute(AppConstantes.ITEM_CART, Utils.totalItensCarrinho(userService));
         return "product_details";
+    }
+    
+    @GetMapping(params = "codigo", value = "download-nf/item")
+    public void removeItemCart(@RequestParam("codigo") String pathNota, HttpServletResponse response) {
+        Utils.downloadNF(pathNota.replace("-", System.getProperty("file.separator")), response);
+        Cart cart = Utils.obterCarrinho(userService);
+        cartService.limparCarrinho(cart);
     }
 
     @ResponseStatus(HttpStatus.NOT_FOUND)

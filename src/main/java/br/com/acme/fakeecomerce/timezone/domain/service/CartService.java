@@ -93,4 +93,9 @@ public class CartService {
 
         return itemCart;
     }
+    
+    public void limparCarrinho(Cart cart) {
+        cart.cleanCart();
+        cartRepository.save(cart);
+    }
 }
