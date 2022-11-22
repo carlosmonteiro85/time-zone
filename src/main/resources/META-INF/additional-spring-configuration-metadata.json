@@ -1,0 +1,12 @@
+{"properties": [
+  {
+    "name": "native-query.package-scan",
+    "type": "java.lang.String",
+    "description": "A description for 'native-query.package-scan'"
+  },
+  {
+    "name": "native-query.file.sufix",
+    "type": "java.lang.String",
+    "description": "A description for 'native-query.file.sufix'"
+  }
+]}
