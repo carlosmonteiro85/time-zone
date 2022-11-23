@@ -49,7 +49,7 @@
 				<div class="row">
 					<div class="col-lg-6">
 						<h3>Detalhes da entrega</h3>
-						<form th:action="@{/gerar-nfe}" th:object="${nf}" id="forma" class="row contact_form" method="post">
+						<form th:action="@{/confirmation}" th:object="${nf}" id="forma" class="row contact_form" method="post">
 							<div class="col-md-12 form-group p_star">
 								<input type="text" class="form-control" id="first" th:field="*{nomeDestinatario}"  
 								placeholder="Nome Destinatário" />

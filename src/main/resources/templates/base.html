@@ -13,13 +13,11 @@
                             <nav>                                                
                                 <ul id="navigation">  
                                     <li><a href="/">Home</a></li>
-                                    <li><a href="/shop">shop</a></li>
+                                    <li><a href="/shop">Produtos</a></li>
                                     <li class="hot"><a href="#">Finalização</a>
                                         <ul class="submenu">
-                                            <li><a href="cart">Carrinhho</a></li>
-<!--                                             <li><a href="#">Element</a></li> -->
-                                            <li><a href="#">Confirmação</a></li>
-<!--                                             <li><a href="#">Product Checkout</a></li> -->
+                                            <li><a href="/cart">Carrinhho</a></li>
+                                            <li><a href="/checkout">Checkout</a></li>
                                         </ul>
                                     </li>
                                     <li><a href="/contact">Contato</a></li>
@@ -34,7 +32,7 @@
                                         <span class="flaticon-search"></span>
                                     </div>
                                 </li>
-                                <li> <a href="login.html"><span class="flaticon-user"></span></a></li>
+                                <li> <a href="#"><span class="flaticon-user"></span></a></li>
                                 <li th:if="${cartQuantidade}" ><a href="cart"><span class="flaticon-shopping-cart" th:text="${cartQuantidade}">10</span></a></li>
                                 <li th:unless="${cartQuantidade}" ><a href="cart"><span class="flaticon-shopping-cart"></span></a></li>
                             </ul>
