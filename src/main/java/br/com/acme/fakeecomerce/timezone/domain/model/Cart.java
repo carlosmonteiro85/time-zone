@@ -18,21 +18,18 @@ import lombok.NoArgsConstructor;
 @Entity
 @NoArgsConstructor
 public class Cart {
-
-    @Getter
+	@Getter
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
 	@Getter
-	@OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
+	@OneToMany(fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE })
 	private List<ItemCart> cartItens = new ArrayList<>();
-
 	@Getter
-	@OneToOne (mappedBy = "cart")
+	@OneToOne(mappedBy = "cart")
 	private User user;
 	
 	public Cart(User usuario) {
-	    this.user = usuario;
+		this.user = usuario;
 	}
 }

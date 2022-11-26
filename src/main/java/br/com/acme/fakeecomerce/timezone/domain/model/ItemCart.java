@@ -12,25 +12,21 @@ import lombok.Setter;
 
 @Entity
 public class ItemCart {
-
     @Getter
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-
     @Setter
     @Getter
 	@ManyToOne
 	@JoinColumn(name = "produto_id", nullable = false)
 	private Produto produto;
-
 	@Getter
     @Setter
 	private Integer quantidade;
 	
 	public ItemCart() {
 	}
-
 	public ItemCart(Produto produto, Integer quantidade) {
 		this.produto = produto;
 		this.quantidade = quantidade;

@@ -18,20 +18,17 @@ import lombok.Setter;
 @Entity
 @Table(name = "usuario")
 public class User {
-
-    @Getter
+	@Getter
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
 	@Setter
 	@Getter
-	@OneToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
-	@JoinColumn(name = "id_cart", nullable = false )
+	@OneToOne(fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE })
+	@JoinColumn(name = "id_cart", nullable = false)
 	private Cart cart;
-	
 	@Setter
-    @Getter
+	@Getter
 	@Enumerated(EnumType.STRING)
 	private RegiaoEnum regiao;
 }
