@@ -1,7 +1,7 @@
 # Ecommerce Time-zone
 Projeto consiste em um ecommerce de venda de relógios, que adiciona itens ao carrinho, soma o frete, realiza o checkout e após a finalização gera uma Nf fiquitícia com os dados da compra:
 
-obs: O projeto tem é um ecommerce fake, que tem o propósito apenas de ser util com portifólio.
+obs: O projeto é um ecommerce fake, que tem o propósito apenas de ser util com portifólio.
 
 Algumas regras de negócios inseridas:
 
