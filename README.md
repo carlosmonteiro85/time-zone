@@ -47,48 +47,48 @@ Obs: para a segunda forma, é necessário o docker instalado na máquina.
 
 # Telas do projeto 
 
-* Home parte 1
+### Home parte 1
 <p float="left">
-  <img src="statics/1.png" width="600" />
+  <img src="statics/1.png" width="900" />
 </p>
 
-* Home parte 2
+### Home parte 2
 <p float="left">
-  <img src="statics/2.png" width="600" />
+  <img src="statics/2.png" width="900" />
 </p>
 
-* Home parte 3
+### Home parte 3
 <p float="left">
-  <img src="statics/3.png" width="600" />
+  <img src="statics/3.png" width="900" />
 </p>
 
-* Home parte 4
+### Home parte 4
 <p float="left">
-  <img src="statics/4.png" width="600" />
+  <img src="statics/4.png" width="900" />
 </p>
 
-* Detalhe do produto
+### Detalhe do produto
 <p float="left">
-  <img src="statics/5.png" width="600" />
+  <img src="statics/5.png" width="900" />
 </p>
 
-* Carrinho de compras
+### Carrinho de compras
 <p float="left">
-  <img src="statics/6.png" width="600" />
+  <img src="statics/6.png" width="900" />
 </p>
 
-* Checkout
+### Checkout
 <p float="left">
-  <img src="statics/7.png" width="600" />
+  <img src="statics/7.png" width="900" />
 </p>
 
-* Confirmação da compra
+### Confirmação da compra
 <p float="left">
-  <img src="statics/8.png" width="600" />
+  <img src="statics/8.png" width="900" />
 </p>
 
-* Nota fiscal gerada pelo sistema 
+### Nota fiscal gerada pelo sistema 
 <p float="left">
-  <img src="statics/9.png" width="600" />
+  <img src="statics/9.png" width="900" />
 </p>
 
