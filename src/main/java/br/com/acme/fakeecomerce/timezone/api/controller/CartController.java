@@ -35,7 +35,7 @@ public class CartController {
 	private final CheckoutAssembler checkoutAssembler;
     
     @GetMapping()
-    public String cart2(Model model) {
+    public String cart(Model model) {
         Cart cart = Utils.obterCarrinho(userService);
 		model.addAttribute(AppConstantes.CHECKOUT, checkoutAssembler.toDTO(checkService.obterCheckout(cart)));
         model.addAttribute("userDTO", new UserDTO());
