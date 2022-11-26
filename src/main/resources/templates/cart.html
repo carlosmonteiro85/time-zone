@@ -83,13 +83,13 @@
 									<td></td>
 									<td>
 										<h5>
-											Subtotal: <span th:text="${checkout.getSubtotal()}">
+											Subtotal: <span th:text="${checkout.subTotal}">
 												R$10.00 </span>
 										</h5>
 									</td>
 									<td>
 										<h5>
-											Total: <span th:text="${checkout.getTotal()}"> R$10.00
+											Total: <span th:text="${checkout.total}"> R$10.00
 											</span>
 										</h5>
 									</td>
@@ -104,7 +104,7 @@
 												<li>
 													<h4>
 														Frete
-														<h5 th:text="${checkout.getFrete()}">Frete</h5>
+														<h5 th:text="${checkout.frete}">Frete</h5>
 													</h4>
 												</li>
 												<li>Por unidade: R$10.00 <input type="radio"

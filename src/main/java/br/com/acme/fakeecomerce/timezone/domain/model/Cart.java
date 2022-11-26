@@ -31,18 +31,6 @@ public class Cart {
 	@Getter
 	@OneToOne (mappedBy = "cart")
 	private User user;
-
-	public void addItemCart(ItemCart itens) {
-	    getCartItens().add(itens);
-	}
-	
-	public void removeItemCart(ItemCart itens) {
-        getCartItens().remove(itens);
-    }
-	
-	public void cleanCart() {
-		user.getCart().cartItens.removeAll(cartItens);
-	}
 	
 	public Cart(User usuario) {
 	    this.user = usuario;

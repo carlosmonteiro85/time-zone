@@ -3,13 +3,14 @@ package br.com.acme.fakeecomerce.timezone.domain.model;
 import java.time.LocalDate;
 import java.util.Random;
 
+import br.com.acme.fakeecomerce.timezone.api.dto.CheckoutDTO;
 import lombok.Getter;
 import lombok.Setter;
 
 public class NfDTO {
     @Setter
     @Getter
-    private Checkout checkout;
+    private CheckoutDTO checkout;
     // [nl_invoice]
     @Getter
     private String nlInvoice =  String.valueOf(new Random().nextInt(9999));

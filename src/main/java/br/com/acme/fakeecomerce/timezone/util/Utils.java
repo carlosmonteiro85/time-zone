@@ -14,7 +14,6 @@ import org.xhtmlrenderer.layout.SharedContext;
 import org.xhtmlrenderer.pdf.ITextRenderer;
 
 import br.com.acme.fakeecomerce.timezone.domain.model.Cart;
-import br.com.acme.fakeecomerce.timezone.domain.model.Checkout;
 import br.com.acme.fakeecomerce.timezone.domain.model.NfDTO;
 import br.com.acme.fakeecomerce.timezone.domain.service.UserService;
 
@@ -26,10 +25,6 @@ public final class Utils {
 
     public static Cart obterCarrinho(UserService service) {
         return service.obtemUsuario().getCart();
-    }
-
-    public static Checkout verificarCheck(Cart cart) {
-        return new Checkout(cart);
     }
 
     public static String gerarNF(NfDTO nf) {
@@ -97,7 +92,7 @@ public final class Utils {
                 .replace("[ds_client_city_name]", nf.getLocalidade())
                 .replace("[nl_client_phone_number]", nf.getTelefone())
                 .replace("[vl_shipping]", nf.getCheckout().getFrete().toString())
-                .replace("[vl_total_prod]", nf.getCheckout().getSubtotal().toString())
+                .replace("[vl_total_prod]", nf.getCheckout().getSubTotal().toString())
                 .replace("[vl_total]", nf.getCheckout().getTotal().toString())
                 .replace("[dt_input_output]", nf.getDataSaida().toString())
                 .replace("[nl_invoice]", nf.getNlInvoice())

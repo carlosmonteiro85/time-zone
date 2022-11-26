@@ -42,7 +42,7 @@ public class CartService {
         boolean possueItem = verificarSePossueItem(item, usuario.getCart(), AcaoEnum.ADICIONAR);
         
         if(!possueItem) {
-            usuario.getCart().addItemCart(item);                            
+            usuario.getCart().getCartItens().add(item);                            
         }
         
         return save(usuario.getCart());
@@ -53,7 +53,7 @@ public class CartService {
         boolean possueItem = verificarSePossueItem(item, usuario.getCart(), AcaoEnum.REMOVER);
         
         if(possueItem) {
-            usuario.getCart().removeItemCart(item);
+            usuario.getCart().getCartItens().remove(item);
         }
         
         return save(usuario.getCart());
@@ -95,7 +95,7 @@ public class CartService {
     }
     
     public void limparCarrinho(Cart cart) {
-        cart.cleanCart();
+    	cart.getCartItens().removeAll(cart.getCartItens());
         cartRepository.save(cart);
     }
 }

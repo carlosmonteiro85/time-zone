@@ -19,9 +19,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import br.com.acme.fakeecomerce.timezone.api.dto.CheckoutDTO;
 import br.com.acme.fakeecomerce.timezone.api.dto.ItemCartDTO;
 import br.com.acme.fakeecomerce.timezone.api.dto.ProdutoDTO;
 import br.com.acme.fakeecomerce.timezone.api.dto.UserDTO;
+import br.com.acme.fakeecomerce.timezone.api.mapper.CheckoutAssembler;
 import br.com.acme.fakeecomerce.timezone.api.mapper.ProdutoAssembler;
 import br.com.acme.fakeecomerce.timezone.api.mapper.UserDisassembler;
 import br.com.acme.fakeecomerce.timezone.core.exception.ErrorInfo;
@@ -31,6 +33,7 @@ import br.com.acme.fakeecomerce.timezone.domain.model.NfDTO;
 import br.com.acme.fakeecomerce.timezone.domain.model.Produto;
 import br.com.acme.fakeecomerce.timezone.domain.model.User;
 import br.com.acme.fakeecomerce.timezone.domain.service.CartService;
+import br.com.acme.fakeecomerce.timezone.domain.service.CheckoutService;
 import br.com.acme.fakeecomerce.timezone.domain.service.ProductService;
 import br.com.acme.fakeecomerce.timezone.domain.service.UserService;
 import br.com.acme.fakeecomerce.timezone.util.AppConstantes;
@@ -40,122 +43,87 @@ import lombok.RequiredArgsConstructor;
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/")
-public class HomeController {
+public class ApiController {
 
-    private final ProductService service;
-    private final UserService userService;
-    private final CartService cartService;
-    private final ProdutoAssembler mapper;
-    private final UserDisassembler userDisassembler;
+	private final ProductService service;
+	private final UserService userService;
+	private final CartService cartService;
+	private final ProdutoAssembler mapper;
+	private final UserDisassembler userDisassembler;
+	private final CheckoutAssembler checkoutAssembler;
+	private final CheckoutService checkService;
 
-    @GetMapping(path = { "", "home" })
-    public String home(Model model) {
-        List<ProdutoDTO> produtos = service.findProdutos();
-        model.addAttribute("produtos", produtos);
-        model.addAttribute(AppConstantes.ITEM_CART, Utils.totalItensCarrinho(userService));
-        model.addAttribute("itemCartDTO", new ItemCartDTO());
-        return "index";
-    }
+	private Cart cart;
 
-    @GetMapping("shop")
-    public String shop(Model model) {
-        List<ProdutoDTO> produtos = service.findProdutos();
-        model.addAttribute("produtos", produtos);
+	@GetMapping(path = { "", "home" })
+	public String home(Model model) {
+		model.addAttribute(AppConstantes.PRODUTOS, service.findProdutos());
+		model.addAttribute(AppConstantes.ITEM_CART, Utils.totalItensCarrinho(userService));
+		model.addAttribute("itemCartDTO", new ItemCartDTO());
+		return "index";
+	}
 
-        List<ProdutoDTO> produtosPorPreco = new ArrayList<>(produtos);
-        Collections.sort(produtosPorPreco, Comparator.comparing(ProdutoDTO::getPreco));
-        model.addAttribute("produtosPorPreco", produtosPorPreco);
+	@GetMapping("shop")
+	public String shop(Model model) {
+		List<ProdutoDTO> produtos = service.findProdutos();
+		
+		List<ProdutoDTO> produtosPorPreco = new ArrayList<>(produtos);
+		Collections.sort(produtosPorPreco, Comparator.comparing(ProdutoDTO::getPreco));
+		
+		List<ProdutoDTO> maisPopulares = new ArrayList<>(produtos);
+		Collections.sort(maisPopulares, Comparator.comparing(ProdutoDTO::getNome));
+		
+		model.addAttribute("produtos", produtos);
+		model.addAttribute("produtosPorPreco", produtosPorPreco);
+		model.addAttribute("maisPopulares", maisPopulares);
+		model.addAttribute(AppConstantes.ITEM_CART, Utils.totalItensCarrinho(userService));
+		return AppConstantes.PAGE_PRODUTOS;
+	}
 
-        List<ProdutoDTO> maisPopulares = new ArrayList<>(produtos);
-        Collections.sort(maisPopulares, Comparator.comparing(ProdutoDTO::getNome));
-        model.addAttribute("maisPopulares", maisPopulares);
+	@PostMapping("regiao")
+	public String atualizarRegiao(UserDTO userDTO, Model model) {
+		User user = userService.obtemUsuario();
+		userDisassembler.copyToDomainObject(userDTO, user);
+		userService.save(user);
+		return "redirect:/cart";
+	}
 
-        model.addAttribute(AppConstantes.ITEM_CART, Utils.totalItensCarrinho(userService));
-        return "shop";
-    }
+	@GetMapping("contact")
+	public String contato(Model model) {
+		model.addAttribute(AppConstantes.ITEM_CART, Utils.totalItensCarrinho(userService));
+		return AppConstantes.CONTATOS;
+	}
 
-    @GetMapping("elements")
-    public String elements(Model model) {
-        return "elements";
-    }
+	@GetMapping(params = "codigo", value = "produto")
+	public String produto(@RequestParam("codigo") Long id, Model model) {
+		Produto produto = service.findById(id);
+		model.addAttribute("produto", produto);
+		model.addAttribute("itemCartDTO", new ItemCartDTO(mapper.toDTO(produto)));
+		model.addAttribute(AppConstantes.ITEM_CART, Utils.totalItensCarrinho(userService));
+		return AppConstantes.PAGE_PRODUTO;
+	}
+	
+	@PostMapping("confirmation")
+	public String confirmacao(NfDTO nf, Model model) {
+		CheckoutDTO checkout = checkoutAssembler.toDTO(checkService.obterCheckout(Utils.obterCarrinho(userService)));
+		nf.setCheckout(checkout);
+		String pathNF = Utils.gerarNF(nf);
+		model.addAttribute("pathNF", pathNF.replace("/", "-").replace("\\", "-"));
+		model.addAttribute(AppConstantes.CHECKOUT, checkout);
+		return AppConstantes.FINALIZACAO;
+	}
+	
+	@GetMapping(params = "codigo", value = "download-nf/item")
+	public void downloadNf(@RequestParam("codigo") String pathNota, HttpServletResponse response) {
+		Utils.downloadNF(pathNota.replace("-", System.getProperty("file.separator")), response);
+		cart = Utils.obterCarrinho(userService);
+		cartService.limparCarrinho(cart);
+	}
 
-    @GetMapping("cart")
-    public String cart2(Model model) {
-
-        Cart cart = Utils.obterCarrinho(userService);
-
-        model.addAttribute(AppConstantes.ITEM_CART, Utils.totalItensCarrinho(userService));
-        model.addAttribute("cart", cart);
-        model.addAttribute(AppConstantes.CHECKOUT, Utils.verificarCheck(cart));
-        model.addAttribute("userDTO", new UserDTO());
-
-        return "cart";
-    }
-
-    @PostMapping("regiao")
-    public String atualizarRegiao(UserDTO userDTO, Model model) {
-        User user = userService.obtemUsuario();
-        userDisassembler.copyToDomainObject(userDTO, user);
-        userService.save(user);
-        return "redirect:/cart";
-    }
-
-    @GetMapping("confirmation")
-    public String elements3(Model model) {
-        return "confirmation";
-    }
-
-    @GetMapping("checkout")
-    public String elements6(Model model) {
-        Cart cart = Utils.obterCarrinho(userService);
-        model.addAttribute(AppConstantes.ITEM_CART, Utils.totalItensCarrinho(userService));
-        model.addAttribute(AppConstantes.CHECKOUT, Utils.verificarCheck(cart));
-        model.addAttribute("nf", new NfDTO());
-        return "checkout";
-    }
-
-    @PostMapping("gerar-nfe")
-    public String elements7(NfDTO nf, Model model) {
-        Cart cart = Utils.obterCarrinho(userService);
-        nf.setCheckout(Utils.verificarCheck(cart));
-        String pathNF = Utils.gerarNF(nf);
-        model.addAttribute("pathNF", pathNF.replace("/", "-").replace("\\", "-"));
-        model.addAttribute(AppConstantes.CHECKOUT, Utils.verificarCheck(cart));
-        return "confirmation";
-    }
-
-    @GetMapping("contact")
-    public String elements4(Model model) {
-        model.addAttribute(AppConstantes.ITEM_CART, Utils.totalItensCarrinho(userService));
-        return "contact";
-    }
-
-    @GetMapping("product_details")
-    public String elements5(Model model) {
-        return "product_details";
-    }
-
-    @GetMapping(params = "codigo", value = "produto")
-    public String main(@RequestParam("codigo") Long id, Model model) {
-        Produto produto = service.findById(id);
-        ItemCartDTO itemCartDTO = new ItemCartDTO(mapper.toDTO(produto));
-        model.addAttribute("produto", produto);
-        model.addAttribute("itemCartDTO", itemCartDTO);
-        model.addAttribute(AppConstantes.ITEM_CART, Utils.totalItensCarrinho(userService));
-        return "product_details";
-    }
-    
-    @GetMapping(params = "codigo", value = "download-nf/item")
-    public void removeItemCart(@RequestParam("codigo") String pathNota, HttpServletResponse response) {
-        Utils.downloadNF(pathNota.replace("-", System.getProperty("file.separator")), response);
-        Cart cart = Utils.obterCarrinho(userService);
-        cartService.limparCarrinho(cart);
-    }
-
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    @ExceptionHandler(ProdutoNaoEncontradoException.class)
-    @ResponseBody
-    ErrorInfo handleBadRequest(HttpServletRequest req, ProdutoNaoEncontradoException ex) {
-        return new ErrorInfo(req.getRequestURI(), ex);
-    }
+	@ResponseStatus(HttpStatus.NOT_FOUND)
+	@ExceptionHandler(ProdutoNaoEncontradoException.class)
+	@ResponseBody
+	ErrorInfo handleBadRequest(HttpServletRequest req, ProdutoNaoEncontradoException ex) {
+		return new ErrorInfo(req.getRequestURI(), ex);
+	}
 }
