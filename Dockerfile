@@ -8,6 +8,4 @@ FROM openjdk:11
 WORKDIR /app
 COPY --from=build ./app/target/*.jar ./app.jar
 
-COPY data  /data
-
 ENTRYPOINT java -jar app.jar
