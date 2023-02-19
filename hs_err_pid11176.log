@@ -1,0 +1,33 @@
+#
+# A fatal error has been detected by the Java Runtime Environment:
+#
+#  SIGSEGV (0xb) at pc=0x00007f5d44e7f291, pid=11176, tid=11194
+#
+# JRE version: OpenJDK Runtime Environment Zulu11.56+19-CA (11.0.15+10) (build 11.0.15+10-LTS)
+# Java VM: OpenJDK 64-Bit Server VM Zulu11.56+19-CA (11.0.15+10-LTS, mixed mode, tiered, compressed oops, g1 gc, linux-amd64)
+# Problematic frame:
+# C  [libjimage.so+0x4291]  ImageStrings::find(Endian*, char const*, int*, unsigned int)+0x71
+#
+# Core dump will be written. Default location: Core dumps may be processed with "/usr/share/apport/apport -p%p -s%s -c%c -d%d -P%P -u%u -g%g -- %E" (or dumping to /home/carlos-monteiro/desenvolvimento/prototipo/time-zone/core.11176)
+#
+# If you would like to submit a bug report, please visit:
+#   http://www.azul.com/support/
+#
+
+---------------  S U M M A R Y ------------
+
+Command Line: -agentlib:jdwp=transport=dt_socket,suspend=y,address=localhost:44349 -javaagent:/home/carlos-monteiro/desenvolvimento/ide/eclipse/configuration/org.eclipse.osgi/401/0/.cp/lib/javaagent-shaded.jar -Dfile.encoding=UTF-8 br.com.acme.fakeecomerce.timezone.TimeZoneApplication
+
+Host: 11th Gen Intel(R) Core(TM) i5-11400H @ 2.70GHz, 12 cores, 15G, Ubuntu 22.04.1 LTS
+Time: Sat Feb 18 17:19:49 2023 -03 elapsed time: 270.763437 seconds (0d 0h 4m 30s)
+
+---------------  T H R E A D  ---------------
+
+Current thread (0x00007f5d3c299000):  JavaThread "Signal Dispatcher" daemon [_thread_in_vm, id=11194, stack(0x00007f5d40010000,0x00007f5d40110000)]
+
+Stack: [0x00007f5d40010000,0x00007f5d40110000],  sp=0x00007f5d4010d070,  free space=1012k
+Native frames: (J=compiled Java code, A=aot compiled Java code, j=interpreted, Vv=VM code, C=native code)
+C  [libjimage.so+0x4291]  ImageStrings::find(Endian*, char const*, int*, unsigned int)+0x71
+C  [libjimage.so+0x4e0a]  ImageFileReader::find_location_index(char const*, unsigned long long*) const+0x3a
+C  [libjimage.so+0x5301]  JIMAGE_FindResource+0xf1
+V  [libjvm.so+0x5dd45f]
