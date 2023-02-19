@@ -164,7 +164,7 @@
                             <div class="popular-img">
                                 <img th:src="${produto.imagens[0].url}" alt="imagem" >
                                 <div class="img-cap">
-                                    <a th:href="@{'/cart/produto?codigo=' + ${produto.id}}"><span>Add ao carrinho</span></a>
+                                    <a th:href="@{/cart/produto?codigo={id}(id=${produto.id})}"><span>Add ao carrinho</span></a>
                                 </div>
                                 <div class="favorit-items">
                                     <span class="flaticon-heart"></span>
