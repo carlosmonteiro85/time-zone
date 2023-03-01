@@ -34,6 +34,9 @@ e execulte a importação do arquivo "dump.sql" para realizar a carga dos dados 
 
 Obs: é necessário que possua docker instalado.
 
+## Migration
+Utiliza Flyway para a carga inicial do banco. 
+
 # Executando o projeto
 
 ## Existe duas formas de execultar o projeto: 
