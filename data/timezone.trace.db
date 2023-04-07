@@ -497,3 +497,9 @@ org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "([*]id, 
 2023-04-06 22:05:53 jdbc[3]: exception
 org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "INSERT INTO produtos (id, descricao, nome, preco, codigo_produto )[*]"; expected "OVERRIDING USER VALUE, OVERRIDING SYSTEM VALUE, DIRECT, SORTED, DEFAULT VALUES, VALUES, SET, WITH, (, SELECT, TABLE, VALUES"; SQL statement:
 INSERT INTO produtos (id, descricao, nome, preco, codigo_produto ) [42001-214]
+2023-04-06 22:24:37 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "PRODUTOS" not found (this database is empty); SQL statement:
+select produto0_.id as id1_5_0_, produto0_.codigo_produto as codigo_p2_5_0_, produto0_.descricao as descrica3_5_0_, produto0_.nome as nome4_5_0_, produto0_.preco as preco5_5_0_ from produtos produto0_ where produto0_.id=? [42104-214]
+2023-04-06 22:24:45 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "PRODUTOS" not found (this database is empty); SQL statement:
+select produto0_.id as id1_5_, produto0_.codigo_produto as codigo_p2_5_, produto0_.descricao as descrica3_5_, produto0_.nome as nome4_5_, produto0_.preco as preco5_5_ from produtos produto0_ [42104-214]

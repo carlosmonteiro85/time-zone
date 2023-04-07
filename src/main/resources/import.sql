@@ -50,15 +50,15 @@ INSERT INTO produtos_imagens (produto_id, imagens_id)VALUES(7, 2);
 INSERT INTO produtos_imagens(produto_id, imagens_id)VALUES(7, 3);
 
 INSERT INTO produtos_imagens(produto_id, imagens_id)VALUES(7, 4);
-	
+
 INSERT INTO produtos_imagens(produto_id, imagens_id)VALUES(8, 6);
 
 INSERT INTO produtos_imagens(produto_id, imagens_id)VALUES(8, 7);
-	
+
 INSERT INTO produtos_imagens(produto_id, imagens_id)VALUES(9, 8);
-	
+
 INSERT INTO produtos_imagens(produto_id, imagens_id)VALUES(9, 9);
-	
+
 INSERT INTO produtos_imagens(produto_id, imagens_id)VALUES(9, 10);
 
 INSERT INTO produtos_imagens(produto_id, imagens_id)VALUES(9, 11);
