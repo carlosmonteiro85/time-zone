@@ -5,6 +5,8 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import br.com.acme.fakeecomerce.timezone.api.dto.UserDTO;
+import br.com.acme.fakeecomerce.timezone.api.mapper.UserDisassembler;
 import br.com.acme.fakeecomerce.timezone.domain.model.Cart;
 import br.com.acme.fakeecomerce.timezone.domain.model.User;
 import br.com.acme.fakeecomerce.timezone.domain.repository.UserRepository;
@@ -17,6 +19,7 @@ import lombok.RequiredArgsConstructor;
 public class UserService {
 
 	private final UserRepository repository;
+	private final UserDisassembler userDisassembler;
 
 	/*
 	 * Obtem o usuario com id 1 caso exista, apenas para fins de teste de funcionalidade de carrinhho
@@ -55,4 +58,10 @@ public class UserService {
 	public void save(User user) {
         repository.save(user);
     }
+
+	public void updateDadosUsuario(UserDTO userDTO) {
+		User user = obtemUsuario();
+		userDisassembler.copyToDomainObject(userDTO, user);
+		repository.save(user);
+	}
 }

@@ -20,15 +20,13 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/checkout")
 public class CheckoutController {
     
-    private final UserService userService;
+	private final UserService userService;
 	private final CheckoutService checkService;
 	private final CheckoutAssembler checkoutAssembler;
 	
-	private Cart cart;
-	
 	@GetMapping()
 	public String elements6(Model model) {
-		cart = Utils.obterCarrinho(userService);
+		Cart cart = Utils.obterCarrinho(userService);
 		Checkout checkout = checkService.obterCheckout(cart);
 		model.addAttribute(AppConstantes.CHECKOUT, checkoutAssembler.toDTO(checkout));
 		model.addAttribute(AppConstantes.ITEM_CART, Utils.totalItensCarrinho(userService));

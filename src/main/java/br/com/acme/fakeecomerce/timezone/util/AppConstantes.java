@@ -31,4 +31,6 @@ public class AppConstantes {
     public static final String CONTATOS = "contact";
     public static final String PAGE_PRODUTO = "product_details";
     public static final String FINALIZACAO = "confirmation";
+    public static final String REDIRECT_CART = "redirect:/cart";
 }
+

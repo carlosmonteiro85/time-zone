@@ -8,13 +8,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import br.com.acme.fakeecomerce.timezone.api.dto.ItemCartDTO;
-import br.com.acme.fakeecomerce.timezone.api.dto.UserDTO;
-import br.com.acme.fakeecomerce.timezone.api.mapper.CheckoutAssembler;
 import br.com.acme.fakeecomerce.timezone.domain.model.Cart;
+import br.com.acme.fakeecomerce.timezone.domain.model.Checkout;
 import br.com.acme.fakeecomerce.timezone.domain.model.ItemCart;
 import br.com.acme.fakeecomerce.timezone.domain.model.Produto;
 import br.com.acme.fakeecomerce.timezone.domain.service.CartService;
 import br.com.acme.fakeecomerce.timezone.domain.service.CheckoutService;
+import br.com.acme.fakeecomerce.timezone.domain.service.DominiosService;
 import br.com.acme.fakeecomerce.timezone.domain.service.ItemService;
 import br.com.acme.fakeecomerce.timezone.domain.service.ProductService;
 import br.com.acme.fakeecomerce.timezone.domain.service.UserService;
@@ -32,15 +32,14 @@ public class CartController {
     private final ProductService produtoService;
     private final UserService userService;
 	private final CheckoutService checkService;
-	private final CheckoutAssembler checkoutAssembler;
+
+    private final DominiosService dominiosService;
     
     @GetMapping()
     public String cart(Model model) {
         Cart cart = Utils.obterCarrinho(userService);
-		model.addAttribute(AppConstantes.CHECKOUT, checkoutAssembler.toDTO(checkService.obterCheckout(cart)));
-        model.addAttribute("userDTO", new UserDTO());
-        model.addAttribute(AppConstantes.ITEM_CART, Utils.totalItensCarrinho(userService));
-        model.addAttribute(AppConstantes.CART , cart);
+        Checkout checkout = checkService.obterCheckout(cart);
+        dominiosService.getDominiosCarrinho(model, cart, checkout);
         return AppConstantes.CART;
     }
     
@@ -55,7 +54,7 @@ public class CartController {
     public String removeItemCart(@RequestParam("codigo") Long id, Model model) {
         ItemCart item = itemService.findById(id);
         cartService.removerItemCarrinho(item);
-        return "redirect:/cart";
+        return AppConstantes.REDIRECT_CART;
     }
     
     @GetMapping(params = "codigo", value = "produto")
