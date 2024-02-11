@@ -13,6 +13,7 @@ public class ItemService {
     private final ItemRepository repository;
 
     public ItemCart findById(Long id) {
-        return repository.findById(id).orElseThrow(() -> new RuntimeException("Carrinho não encontrado."));
+        return repository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Carrinho não encontrado."));
     }
 }

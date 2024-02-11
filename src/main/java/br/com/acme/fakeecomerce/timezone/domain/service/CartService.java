@@ -26,7 +26,8 @@ public class CartService {
     }
 
     public Cart findById(Long id) {
-        return cartRepository.findById(id).orElseThrow(() -> new RuntimeException("Carrinho não encontrado."));
+        return cartRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Carrinho não encontrado."));
     }
 
     public List<Cart> findAll() {
@@ -63,7 +64,9 @@ public class CartService {
         boolean possueItem = false;
         for (ItemCart itemCart : cart.getCartItens()) {
             if(itemCart.getProduto().equals(item.getProduto())) {
-                int qt = acao.equals(AcaoEnum.ADICIONAR) ? itemCart.getQuantidade() +  item.getQuantidade() : itemCart.getQuantidade() - item.getQuantidade();
+                int qt = acao.equals(AcaoEnum.ADICIONAR) 
+                    ? itemCart.getQuantidade() +  item.getQuantidade() 
+                    : itemCart.getQuantidade() - item.getQuantidade();
                 itemCart.setQuantidade(qt < 0 ? 0 : qt ); 
                 possueItem = true;
                 break;
